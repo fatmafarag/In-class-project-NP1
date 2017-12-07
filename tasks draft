@@ -1,0 +1,79 @@
+import { Component, OnInit } from '@angular/core';
+import {Contact} from './contact';
+
+@Component({
+  selector: 'app-tasks',
+  templateUrl: './tasks.component.html',
+  styleUrls: ['./tasks.component.css']
+})
+export class TasksComponent {
+
+  contacts: Array<Contact> = [];
+  
+    addContact(name,phone){
+        const contact = new Contact(name.value,phone.value);
+        this.contacts.push(contact);
+        name.value = '';
+        phone.value = '';
+    }
+  
+    removeContact(contact){
+        const index = this.contacts.indexOf(contact);
+        this.contacts.splice(index,1);
+    }
+  
+
+}
+
+
+
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { TasksComponent } from './tasks.component';
+
+describe('TasksComponent', () => {
+  let component: TasksComponent;
+  let fixture: ComponentFixture<TasksComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ TasksComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TasksComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+
+
+
+
+<div>
+  <h1>The tasks list</h1>
+  <table class="table">
+      <thead>
+          <tr>
+              <td>Enter the task and it's due date:</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let contact of contacts" style="margin-bottom: 10px;">
+              <td>{{contact.descr}}</td> <td><button class="btn btn-primary btn-xs" (click)="removeContact(contact)">Done</button></td>
+          </tr>
+      </tbody>
+  </table>
+
+  <div class="addContactControls">
+      <input #name placeholder="The task" />
+      <input #phone placeholder="The due date" />
+      <button class="btn btn-primary btn-xs" (click)="addContact(name,phone)">Add task</button>
+  </div>
+</div>
